@@ -22,11 +22,106 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "a11y": "error",
+      "complexity": {
+        "recommended": true,
+        "noExcessiveCognitiveComplexity": "off",
+        "noExcessiveLinesPerFunction": "off",
+        "noVoid": "off"
+      },
+      "correctness": {
+        "recommended": true,
+        "noConstantMathMinMaxClamp": "error",
+        "noGlobalDirnameFilename": "error",
+        "noNestedComponentDefinitions": "error",
+        "noNextAsyncClientComponent": "error",
+        "noPrivateImports": "error",
+        "noReactPropAssignments": "error",
+        "noUndeclaredVariables": "error",
+        "noUnusedFunctionParameters": "error",
+        "noUnusedImports": "error",
+        "noUnresolvedImports": "off",
+        "noUnusedVariables": "error",
+        "useExhaustiveDependencies": "error",
+        "useHookAtTopLevel": "error",
+        "useImportExtensions": "off",
+        "useUniqueElementIds": "off"
+      },
+      "performance": {
+        "recommended": true,
+        "noAccumulatingSpread": "error",
+        "noDelete": "error",
+        "noReExportAll": "error"
+      },
+      "security": {
+        "recommended": true,
+        "noBlankTarget": "error",
+        "noDangerouslySetInnerHtml": "error",
+        "noDangerouslySetInnerHtmlWithChildren": "error",
+        "noGlobalEval": "error",
+        "noSecrets": "off"
+      },
+      "style": {
+        "recommended": true,
+        "noCommonJs": "error",
+        "useComponentExportOnlyModules": "off",
+        "noInferrableTypes": "error",
+        "noNamespace": "error",
+        "noNonNullAssertion": "error",
+        "noParameterAssign": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
+        "useAsConstAssertion": "error",
+        "useConst": "error",
+        "useDefaultParameterLast": "error",
+        "useDefaultSwitchClause": "error",
+        "useEnumInitializers": "error",
+        "useExportType": "error",
+        "useForOf": "error",
+        "useImportType": "error",
+        "useLiteralEnumMembers": "error",
+        "useNodejsImportProtocol": "error",
+        "useNumberNamespace": "error",
+        "useTemplate": "error"
+      },
+      "suspicious": {
+        "recommended": true,
+        "noApproximativeNumericConstant": "error",
+        "noDocumentCookie": "error",
+        "noExplicitAny": "error",
+        "noUnknownAtRules": "off"
+      },
+      "nursery": {
+        "noBeforeInteractiveScriptOutsideDocument": "error",
+        "noDuplicatedSpreadProps": "error",
+        "noEqualsToNull": "error",
+        "noFloatingPromises": "error",
+        "noForIn": "error",
+        "noLeakedRender": "error",
+        "noMisusedPromises": "error",
+        "noNestedPromises": "error",
+        "noProto": "error",
+        "noReturnAssign": "error",
+        "noScriptUrl": "error",
+        "noShadow": "error",
+        "noUndeclaredEnvVars": "error",
+        "noUnnecessaryConditions": "error",
+        "useArraySortCompare": "error",
+        "useAwaitThenable": "error",
+        "useErrorCause": "error",
+        "useExhaustiveSwitchCases": "error",
+        "useFind": "error",
+        "useInlineScriptId": "error",
+        "useSpread": "error"
+      }
     },
     "domains": {
-      "next": "recommended",
-      "react": "recommended"
+      "next": "all",
+      "project": "recommended",
+      "react": "all",
+      "tailwind": "all",
+      "types": "all"
     }
   },
   "assist": {
