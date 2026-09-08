@@ -1,0 +1,9 @@
+# Copy to .dev.vars for local Cloudflare bindings used by `next dev` and preview.
+# Clerk's publishable key must also exist in `.env.local` at build time.
+NEXTJS_ENV=development
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+ONECOMPILER_API_URL=
+ONECOMPILER_API_KEY=
+# Set the marketplace host when using OneCompiler through RapidAPI.
+ONECOMPILER_API_HOST=

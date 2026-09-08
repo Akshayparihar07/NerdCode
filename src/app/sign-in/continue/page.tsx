@@ -1,13 +1,18 @@
 "use client";
 
 import { useSignUp } from "@clerk/nextjs";
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { AuthCard } from "@/components/auth/auth-card";
 import { useAuthCompanionField } from "@/components/auth/auth-companion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { clerkErrorMessage, firstGlobalErrorMessage } from "@/lib/auth";
+import {
+  clerkErrorMessage,
+  firstGlobalErrorMessage,
+  safeRedirectPath,
+} from "@/lib/auth";
 
 export default function ContinueSignUpPage() {
   return (
@@ -48,7 +53,10 @@ function ContinueForm() {
       if (signUp.status === "complete") {
         await signUp.finalize({
           navigate: () => {
-            router.push("/");
+            const redirectUrl = safeRedirectPath(
+              new URLSearchParams(window.location.search).get("redirect_url"),
+            );
+            router.push(redirectUrl as Route);
           },
         });
         return;

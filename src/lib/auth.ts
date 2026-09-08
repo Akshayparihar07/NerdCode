@@ -27,3 +27,28 @@ export function firstGlobalErrorMessage(
 export function goToAppHome(url = "/"): void {
   window.location.assign(url);
 }
+
+export function safeRedirectPath(
+  value: string | string[] | null | undefined,
+  fallback = "/",
+): string {
+  const candidate = Array.isArray(value) ? value[0] : value;
+
+  if (
+    candidate === undefined ||
+    candidate === null ||
+    !candidate.startsWith("/") ||
+    candidate.startsWith("//")
+  ) {
+    return fallback;
+  }
+
+  try {
+    const url = new URL(candidate, "https://nerdcode.local");
+    return url.origin === "https://nerdcode.local"
+      ? `${url.pathname}${url.search}${url.hash}`
+      : fallback;
+  } catch {
+    return fallback;
+  }
+}

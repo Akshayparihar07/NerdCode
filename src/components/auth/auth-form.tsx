@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AuthCard } from "@/components/auth/auth-card";
@@ -11,13 +12,14 @@ export type AuthTab = "sign-in" | "sign-up";
 
 interface AuthFormProps {
   initialTab: AuthTab;
+  redirectUrl: string;
 }
 
 function isAuthTab(value: string): value is AuthTab {
   return value === "sign-in" || value === "sign-up";
 }
 
-export function AuthForm({ initialTab }: AuthFormProps) {
+export function AuthForm({ initialTab, redirectUrl }: AuthFormProps) {
   const router = useRouter();
   const [tab, setTab] = useState<AuthTab>(initialTab);
 
@@ -31,9 +33,12 @@ export function AuthForm({ initialTab }: AuthFormProps) {
     }
 
     setTab(value);
-    router.replace(value === "sign-in" ? "/sign-in" : "/sign-up", {
-      scroll: false,
-    });
+    const path = value === "sign-in" ? "/sign-in" : "/sign-up";
+    const query =
+      redirectUrl === "/"
+        ? ""
+        : `?redirect_url=${encodeURIComponent(redirectUrl)}`;
+    router.replace(`${path}${query}` as Route, { scroll: false });
   };
 
   const isSignIn = tab === "sign-in";
@@ -57,10 +62,10 @@ export function AuthForm({ initialTab }: AuthFormProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="sign-in">
-          {isSignIn ? <LoginForm /> : null}
+          {isSignIn ? <LoginForm redirectUrl={redirectUrl} /> : null}
         </TabsContent>
         <TabsContent value="sign-up">
-          {isSignIn ? null : <SignUpForm />}
+          {isSignIn ? null : <SignUpForm redirectUrl={redirectUrl} />}
         </TabsContent>
         <div id="clerk-captcha" className="min-h-20" />
       </Tabs>

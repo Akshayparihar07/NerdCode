@@ -2,6 +2,7 @@
 
 import { useSignIn, useSignUp } from "@clerk/nextjs";
 import type { OAuthStrategy } from "@clerk/nextjs/types";
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { useAuthCompanionField } from "@/components/auth/auth-companion";
@@ -14,7 +15,7 @@ import {
   goToAppHome,
 } from "@/lib/auth";
 
-export function SignUpForm() {
+export function SignUpForm({ redirectUrl }: { redirectUrl: string }) {
   const router = useRouter();
   const { signIn } = useSignIn();
   const { signUp, errors, fetchStatus } = useSignUp();
@@ -35,7 +36,7 @@ export function SignUpForm() {
 
     await signUp.finalize({
       navigate: ({ decorateUrl }) => {
-        goToAppHome(decorateUrl("/"));
+        goToAppHome(decorateUrl(redirectUrl));
       },
     });
   };
@@ -49,8 +50,8 @@ export function SignUpForm() {
       setFormError(undefined);
       const { error } = await signIn.sso({
         strategy,
-        redirectCallbackUrl: "/sso-callback",
-        redirectUrl: "/",
+        redirectCallbackUrl: `/sso-callback?redirect_url=${encodeURIComponent(redirectUrl)}`,
+        redirectUrl,
       });
 
       if (error) {
@@ -96,7 +97,9 @@ export function SignUpForm() {
       }
 
       if (signUp.status === "missing_requirements") {
-        router.push("/sign-in/continue");
+        router.push(
+          `/sign-in/continue?redirect_url=${encodeURIComponent(redirectUrl)}` as Route,
+        );
         return;
       }
 
@@ -126,7 +129,9 @@ export function SignUpForm() {
       }
 
       if (signUp.status === "missing_requirements") {
-        router.push("/sign-in/continue");
+        router.push(
+          `/sign-in/continue?redirect_url=${encodeURIComponent(redirectUrl)}` as Route,
+        );
         return;
       }
 

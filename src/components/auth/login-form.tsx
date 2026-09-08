@@ -13,7 +13,7 @@ import {
   goToAppHome,
 } from "@/lib/auth";
 
-export function LoginForm() {
+export function LoginForm({ redirectUrl }: { redirectUrl: string }) {
   const { signIn, errors, fetchStatus } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +29,7 @@ export function LoginForm() {
 
     await signIn.finalize({
       navigate: ({ decorateUrl }) => {
-        goToAppHome(decorateUrl("/"));
+        goToAppHome(decorateUrl(redirectUrl));
       },
     });
   };
@@ -43,8 +43,8 @@ export function LoginForm() {
       setFormError(undefined);
       const { error } = await signIn.sso({
         strategy,
-        redirectCallbackUrl: "/sso-callback",
-        redirectUrl: "/",
+        redirectCallbackUrl: `/sso-callback?redirect_url=${encodeURIComponent(redirectUrl)}`,
+        redirectUrl,
       });
 
       if (error) {

@@ -1,9 +1,10 @@
 "use client";
 
 import { useClerk, useSignIn, useSignUp } from "@clerk/nextjs";
+import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { goToAppHome } from "@/lib/auth";
+import { goToAppHome, safeRedirectPath } from "@/lib/auth";
 
 export default function SsoCallbackPage() {
   const clerk = useClerk();
@@ -24,9 +25,12 @@ export default function SsoCallbackPage() {
       }
 
       hasRun.current = true;
+      const redirectUrl = safeRedirectPath(
+        new URLSearchParams(window.location.search).get("redirect_url"),
+      );
 
       const goHome = async () => {
-        goToAppHome();
+        goToAppHome(redirectUrl);
       };
 
       if (signIn.status === "complete") {
@@ -45,7 +49,9 @@ export default function SsoCallbackPage() {
           return;
         }
 
-        router.push("/sign-in");
+        router.push(
+          `/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}` as Route,
+        );
         return;
       }
 
@@ -58,7 +64,9 @@ export default function SsoCallbackPage() {
           return;
         }
 
-        router.push("/sign-in/continue");
+        router.push(
+          `/sign-in/continue?redirect_url=${encodeURIComponent(redirectUrl)}` as Route,
+        );
         return;
       }
 
@@ -79,7 +87,9 @@ export default function SsoCallbackPage() {
         return;
       }
 
-      router.push("/sign-in");
+      router.push(
+        `/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}` as Route,
+      );
     };
 
     void finish();
